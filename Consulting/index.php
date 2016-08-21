@@ -1,6 +1,11 @@
 <?php 
 
+require('../vendor/autoload.php');
+
 include_once("home.html"); 
+
+$app = new Silex\Application();
+$app['debug'] = true;
 
 $dbopts = parse_url(getenv('DATABASE_URL'));
 $app->register(new Herrera\Pdo\PdoServiceProvider(),
@@ -11,7 +16,22 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
                )
 );
 
+// Register the monolog logging service
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+  'monolog.logfile' => 'php://stderr',
+));
+// Register view rendering
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/views',
+));
 
+//cowsay route
+$app->get('/cowsay', function() use($app) {
+  $app['monolog']->addDebug('cowsay');
+  return "<pre>".\Cowsayphp\Cow::say("Cool beans")."</pre>";
+});
+
+//web server
 $app->get('/db/', function() use($app) {
   $st = $app['pdo']->prepare('SELECT name FROM test_table');
   $st->execute();
@@ -27,5 +47,5 @@ $app->get('/db/', function() use($app) {
   ));
 });
 
-
+$app->run();
 ?>
