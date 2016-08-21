@@ -12,6 +12,6 @@ if( isset($_POST['submit']) )
 	           'Message: ' . $_POST['message'];
 	
 	mail($to, $subject, $message, $headers);	
-	header("Location: index.html");
+	header("Location: home.html");
 }
 ?>
