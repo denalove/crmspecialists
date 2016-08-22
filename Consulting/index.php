@@ -25,6 +25,11 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/views',
 ));
 
+// define "global" controllers
+$app->get('/', function () {
+    return 'Main home page';
+});
+
 //cowsay route
 $app->get('/cowsay', function() use($app) {
   $app['monolog']->addDebug('cowsay');
