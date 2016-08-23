@@ -8,17 +8,16 @@ use Mailgun\Mailgun;
 
 # Instantiate the client.
 $mgClient = new Mailgun('key-96d82ca8ad9aa148aba3dd0edf467655');
-$domain = "sandbox087ac163b21443349994f894259bab00.mailgun.org";
+$domain = "mg.swflcloudforce.com";
 
 # Make the call to the client.
 if( isset($_POST['submit']) )
 {
 	$result = $mgClient->sendMessage("$domain",
                   array('from'    => '$_POST['email']',
-                        'to'      => 'Dena Sawyer <denasawyer1111@gmail.com>',
                         'subject' => '$_POST['subject']',
                         'text'    => '$_POST['message']',
-                        'name'		=> '$_POST['name']'));
+                        'body-plain'		=> '$_POST['name']'));
 
 
 
@@ -32,6 +31,7 @@ if( isset($_POST['submit']) )
 	//           'Message: ' . $_POST['message'];
 	
 	//mail($to, $subject, $message, $headers);	
+	forward("denasawyer1111@gmail.com, home.html");
 	header("Location: home.html");
 }
 ?>
